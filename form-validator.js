@@ -215,6 +215,7 @@
 		$('input').on('keyup',  genericValidation);
 
 		$(this).submit( function( event ) {
+			var validationFail = false;
 			$(this).find('input').each(function (i) {
 
 				var attr = $(this).attr('is');
@@ -223,13 +224,19 @@
    					var border = $(this).css('border-color');
    					
    					if (border != BORDER_COLOR_SUCCESS) {
-   						event.preventDefault();
-   						return false;
+   						validationFail = true;
+   						error($(this));
    					} 
 				}	
 
 			});
-			return true;
+
+			if (validationFail) {
+				event.preventDefault();
+				return false;
+			} else {
+				return true;
+			}			
 		});
 
 	};
