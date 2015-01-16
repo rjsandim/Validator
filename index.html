@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Jquery Form Validator Plugin</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="vendor/datepicker/css/datepicker.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="vendor/datepicker/js/bootstrap-datepicker.js"></script>
+	<script src="vendor/masked-input/jquery.maskedinput.min.js"></script>
+	<script src="form-validator.js"></script>
+</head>
+<body>
+	
+	<h1>Jquery Form Validator Plugin</h1>
+	<h2>Form 1</h2>
+	<form action="">
+		<label for="">Email</label>
+		<input type="text" name="email" is="email" placeholder="Email"><br>
+		<label for="">CPF</label>
+		<input type="text" name="cpf" is="cpf" placeholder="CPF"><br>
+		<label for="">Requerido</label>
+		<input type="text" name="required" is="required" placeholder="Requerido"><br>
+		<label for="">Data</label>
+		<input type="text" name="date" is="date" placeholder="Data"><br>
+		<label for="">Telefone</label>
+		<input type="text" name="phone" is="phone" placeholder="Telefone"><br>
+		<label for="">CEP</label>
+		<input type="text" name="cep" is="cep" placeholder="CEP"><br>
+		<label for="">Estado</label>
+		<input type="text" class="estado" name="estado" placeholder="Estado"><br>
+		<label for="">Cidade</label>
+		<input type="text" class="cidade" name="cidade" placeholder="Cidade"><br>
+		<label for="">Bairro</label>
+		<input type="text" class="bairro" name="bairro" placeholder="Bairro"><br>
+		<label for="">Endereço</label>
+		<input type="text" class="endereco" name="endereco" placeholder="Endereço"><br>
+		<label for="">Primeira Senha</label>
+		<input type="password" name="fistPass" is="firstPass" placeholder="Primeira Senha"><br>
+		<label for="">Segunda Senha</label>
+		<input type="password" name="secondPass" is="secondPass" placeholder="Segunda Senha"><br>
+		<label for="">Sem Is</label>
+		<input type="text" name="semIs" placeholder="Sem is"><br>
+		<input type="submit" value="Enviar 1">
+	</form>
+	<h2>Form 2</h2>
+	<form action="" id="form2">
+		<label for="">Email</label>
+		<input type="text" name="email" is="email" placeholder="Email"><br>
+		<label for="">CPF</label>
+		<input type="text" name="cpf" is="cpf" placeholder="CPF"><br>
+		<label for="">Requerido</label>
+		<input type="text" name="required" is="required" placeholder="Requerido"><br>
+		<label for="">Data</label>
+		<input type="text" name="date" is="date" placeholder="Data"><br>
+		<label for="">Telefone</label>
+		<input type="text" name="phone" is="phone" placeholder="Telefone"><br>
+		<label for="">CEP</label>
+		<input type="text" name="cep" is="cep" placeholder="CEP"><br>
+		<label for="">Estado</label>
+		<input type="text" class="estado" name="estado" placeholder="Estado"><br>
+		<label for="">Cidade</label>
+		<input type="text" class="cidade" name="cidade" placeholder="Cidade"><br>
+		<label for="">Bairro</label>
+		<input type="text" class="bairro" name="bairro" placeholder="Bairro"><br>
+		<label for="">Endereço</label>
+		<input type="text" class="endereco" name="endereco" placeholder="Endereço"><br>
+		<label for="">Primeira Senha</label>
+		<input type="password" name="fistPass" is="firstPass" placeholder="Primeira Senha"><br>
+		<label for="">Segunda Senha</label>
+		<input type="password" name="secondPass" is="secondPass" placeholder="Segunda Senha"><br>
+	</form>
+	<button type="submit" form="form2" value="Enviar 2">Enviar 2</button>
+
+	<script type="text/javascript">
+	$(document).ready(function() { 
+		$('form').formValidator();
+	});
+
+	</script>
+
+</body>
+</html>
+
