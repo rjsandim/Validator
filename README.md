@@ -60,7 +60,7 @@ Para ativar o plugin você deve escrever o seguinte código.
 	});
 </script>
 ```
-Agora para todos os formulários do seu arquivo.html o plugin formValidator estará funcionando, porém devemos indicar para cada tipo de campo qual validação devemos aplicar. Para isso, devemos acrescentar o atributo *is="nome_da_validação*.
+Agora para todos os formulários do seu arquivo.html o plugin formValidator estará funcionando, porém devemos indicar para cada tipo de campo qual validação devemos aplicar. Para isso, devemos acrescentar o atributo *is="nome_da_validação"*.
 
 #### Validação de Email
 
