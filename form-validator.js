@@ -8,29 +8,29 @@
 		var validator = { 
 			email: function validateEmail(value, element) {
 				var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-				validateByRegex(value, element, regex);
+				return validateByRegex(value, element, regex);
 			}, 
 			cpf: function validateCPF(value, element) {
 				if (validatorCPF(value)) {
-					success(element);
+					return success(element);
 				} else {
-					error(element);
+					return error(element);
 				}
 			}, 
 			required : function isRequired(value, element) {
 				if (value.length) { 
-					success(element);
+					return success(element);
 				} else {
-					error(element);
+					return error(element);
 				}
 			}, 
 			date: function validateDate(value, element) {
 				var regex = /^(0([1-9])|(1|2)([0-9])|3([0-1]))\/(0([1-9])|1([0-2]))\/(19|2[0-9])[0-9]{2}/;
-				validateByRegex(value, element, regex);
+				return validateByRegex(value, element, regex);
 			},
 			phone: function validatePhone(value, element) {
 				var regex = /^\([0-9]{2}\)\s[0-9]{4}\-[0-9]{4}[0-9]?/;
-				validateByRegex(value, element, regex);
+				return validateByRegex(value, element, regex);
 			},
 			cep: function validateCEP(value, element) {
 
@@ -56,30 +56,30 @@
 						success(cidade);
 						success(bairro);
 						success(endereco);
-						success(element);
+						return success(element);
 
 					} else {
-						error(element);
+						return error(element);
 					}
 
 				}).fail(function() {
-					error(element);
+					return error(element);
 				});
 			},
 			firstPass: function validatePass(value, element) {
 				passwordValue = value;
 
 				if (value.length) { 
-					success(element);
+					return success(element);
 				} else {
-					error(element);
+					return error(element);
 				}
 			},
 			secondPass: function confirmPass(value, element) {
-				if (passwordValue === value) {
-					success(element);
+				if (passwordValue === value && value.length) {
+					return success(element);
 				} else {
-					error(element);
+					return error(element);
 				}
 			},
 
@@ -98,14 +98,7 @@
     				calendarWeeks: true,
     				autoclose: true
 				}).on('hide', function(e){
-
-       				is = $(this).attr('is');
-					var fn = validator[is];
-					var v = $(this).val();
-
-					if (typeof fn === "function") { 
-						fn(v, $(this));
-					}
+       				genericValidationElement($(this));
     			});
 			},
 			phone: function phoneMask(e) {
@@ -185,18 +178,20 @@
 		
 		function validateByRegex(value, element, regex) {
 			if(regex.exec(value)) {
-				success(element);
+				return success(element);
 			} else {
-				error(element);
+				return error(element);
 			}
 		}
 
 		function success(element) {
 			element.css("border-color", BORDER_COLOR_SUCCESS);
+			return true;
 		}
 
 		function error(element) {
-			element.css("border-color", BORDER_COLOR_ERROR);  
+			element.css("border-color", BORDER_COLOR_ERROR); 
+			return false;
 		}
 
 		function genericValidation() {
@@ -206,8 +201,21 @@
 			var v = $(this).val();
 
 			if (typeof fn === "function") { 
-				fn(v, $(this));
-			}		
+				return fn(v, $(this));
+			}	
+			return false;	
+		}
+
+		function genericValidationElement(element) {
+			
+			is = element.attr('is');
+			var fn = validator[is];
+			var v = element.val();
+
+			if (typeof fn === "function") { 
+				return fn(v, element);
+			}
+			return false;	
 		}
 
 		$('input').blur(genericValidation);
@@ -224,8 +232,9 @@
    					var border = $(this).css('border-color');
    					
    					if (border != BORDER_COLOR_SUCCESS) {
-   						validationFail = true;
-   						error($(this));
+   						if (!genericValidationElement($(this))) {
+   							validationFail = true;
+   						}
    					} 
 				}	
 
