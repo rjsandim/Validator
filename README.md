@@ -18,6 +18,10 @@ Esse plugin suporta:
         * exemplo: (33) 3333-3333 ou (33) 3333-33333
         * is="phone"
         * suporta nono digito
+    * Moeda
+        * exemplo: 333.333,00
+        * is="money"
+        * padrão R$
     * CEP
         * exemplo: 79092-251
         *  is="cep"
@@ -30,6 +34,7 @@ Esse plugin suporta:
     * Data
     * Telefone
     * CEP
+    * Moeda
 * Plugin para facilitar o input:
     * datepicker (bootstrap)
 * Múltiplos forms por página
@@ -93,6 +98,13 @@ Agora para todos os formulários do seu arquivo.html o plugin formValidator esta
 ```html
 <!-- Note o is="phone" -->
 <input type="text" name="phone" is="phone" placeholder="Telefone"><br>
+```
+
+#### Validação de Moeda
+
+```html
+<!-- Note o is="money" -->
+<input type="text" name="moeda" is="money" placeholder="Moeda"><br>
 ```
 
 #### Validação de CEP

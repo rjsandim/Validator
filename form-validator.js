@@ -66,6 +66,10 @@
 					return error(element);
 				});
 			},
+			money: function validateMoney(value, element) {
+				var regex = /^(\R\$\s)?([0-9]{1,3}\.)*[0-9]{1,3}\,[0-9]{2}/;
+				return validateByRegex(value, element, regex);
+			},
 			firstPass: function validatePass(value, element) {
 				passwordValue = value;
 
@@ -107,6 +111,15 @@
 			cep: function cepMask(e) {
 				e.mask("99999-999");
 			},
+			money: function moneyMask(e) {
+				e.maskMoney({
+					symbol:'R$ ', 
+					showSymbol: true, 
+					thousands:'.', 
+					decimal:',', 
+					symbolStay: false
+				});
+			}
 		};
 
 		function init() {
