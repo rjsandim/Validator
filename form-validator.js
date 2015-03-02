@@ -29,7 +29,7 @@
 				return validateByRegex(value, element, regex);
 			},
 			phone: function validatePhone(value, element) {
-				var regex = /^\([0-9]{2}\)\s[0-9]{4}\-[0-9]{4}[0-9]?/;
+				var regex = /^\([0-9]{2}\)\s([0-9]\s)?[0-9]{4}\-[0-9]{4}/;
 				return validateByRegex(value, element, regex);
 			},
 			cep: function validateCEP(value, element) {
@@ -106,7 +106,17 @@
     			});
 			},
 			phone: function phoneMask(e) {
-				e.mask("(99) 9999-9999?9", {placeholder:" "});
+				e.focusout(function(){
+				    var phone, element;
+				    element = $(this);
+				    element.unmask();
+				    phone = element.val().replace(/\D/g, '');
+				    if(phone.length > 10) {
+				        element.mask("(99) 9 9999-999?9", {placeholder:" "});
+				    } else {
+				        element.mask("(99) 9999-9999?9", {placeholder:" "});
+				    }
+				}).trigger('focusout');
 			},
 			cep: function cepMask(e) {
 				e.mask("99999-999");
