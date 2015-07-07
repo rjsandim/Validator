@@ -2,21 +2,56 @@
 	$.fn.formValidator = function() {
  		
  		var passwordValue;
+ 		var emailValue;
 		var is;
 		var BORDER_COLOR_SUCCESS = "rgb(39, 173, 30)";
 		var BORDER_COLOR_ERROR = "rgb(224, 23, 23)";
 		var validator = { 
 			email: function validateEmail(value, element) {
 				var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+				emailValue = value;
 				return validateByRegex(value, element, regex);
-			}, 
+			},
+			secondEmail: function confirmEmail(value, element) {
+				if (emailValue === value && value.length) {
+					return success(element);
+				} else {
+					return error(element);
+				}
+			},
 			cpf: function validateCPF(value, element) {
 				if (validatorCPF(value)) {
 					return success(element);
 				} else {
 					return error(element);
 				}
-			}, 
+			},
+			cnpj: function validateCNPJ(value, element) {
+				if (validatorCNPJ(value)) {
+					return success(element);
+				} else {
+					return error(element);
+				}
+			},
+			cpf_cnpj: function validadeCpfCnpj(value, element) {
+				validation = false;
+
+				if (value.length <= 14) {        
+	            	value = mascaraCPF(value);
+	            	element.val(value);
+	            	validation = validatorCPF(value);
+	            } else {   
+	            	value = mascaraCNPJ(value);
+	            	element.val(value);
+	            	validation = validatorCNPJ(value);
+	            }
+
+	            if (validation) {
+	            	return success(element);
+	            } else {
+	            	return error(element);
+	            }
+ 			}, 
 			required : function isRequired(value, element) {
 				if (value.length) { 
 					return success(element);
@@ -91,7 +126,10 @@
 
 		var masks = {
 			cpf: function cpfMask(e) {
-				e.mask("999.999.999-99");
+				e.mask("999.999.999-99", {placeholder:" "});
+			},
+			cnpj: function cnpjMask(e){
+				e.mask("99.999.999/9999-99", {placeholder:" "});
 			},
 			date: function dateMask(e) {
 				e.mask("99/99/9999");
@@ -196,8 +234,92 @@
 			else {
 				return false;
 			}
-			
 		}
+
+		function validatorCNPJ(cnpj) {
+ 
+		    cnpj = cnpj.replace(/[^\d]+/g,'');
+		 
+		    if(cnpj == '') return false;
+		     
+		    if (cnpj.length != 14)
+		        return false;
+		 
+		    // Elimina CNPJs invalidos conhecidos
+		    if (cnpj == "00000000000000" || 
+		        cnpj == "11111111111111" || 
+		        cnpj == "22222222222222" || 
+		        cnpj == "33333333333333" || 
+		        cnpj == "44444444444444" || 
+		        cnpj == "55555555555555" || 
+		        cnpj == "66666666666666" || 
+		        cnpj == "77777777777777" || 
+		        cnpj == "88888888888888" || 
+		        cnpj == "99999999999999")
+		        return false;
+		         
+		    // Valida DVs
+		    tamanho = cnpj.length - 2
+		    numeros = cnpj.substring(0,tamanho);
+		    digitos = cnpj.substring(tamanho);
+		    soma = 0;
+		    pos = tamanho - 7;
+		    for (i = tamanho; i >= 1; i--) {
+		      soma += numeros.charAt(tamanho - i) * pos--;
+		      if (pos < 2)
+		            pos = 9;
+		    }
+		    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+		    if (resultado != digitos.charAt(0))
+		        return false;
+		         
+		    tamanho = tamanho + 1;
+		    numeros = cnpj.substring(0,tamanho);
+		    soma = 0;
+		    pos = tamanho - 7;
+		    for (i = tamanho; i >= 1; i--) {
+		      soma += numeros.charAt(tamanho - i) * pos--;
+		      if (pos < 2)
+		            pos = 9;
+		    }
+		    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+		    if (resultado != digitos.charAt(1))
+		          return false;
+		           
+		    return true;
+		    
+		}
+
+		function mascaraCPF(valor) {
+	        // Remove qualquer caracter digitado que não seja numero
+	        valor = valor.replace(/\D/g, "");                   
+	 
+	        // Adiciona um ponto entre o terceiro e o quarto digito
+	        valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+	 
+	        // Adiciona um ponto entre o terceiro e o quarto dígitos 
+	        // desta vez para o segundo bloco      
+	        valor = valor.replace(/(\d{3})\.(\d{3})(\d)/, "$1.$2.$3");
+	 
+	        // Adiciona um hifen entre o terceiro e o quarto dígitos
+	        valor = valor.replace(/(\d{3})\.(\d{3})\.(\d{3})(\d{1,2})$/, "$1.$2.$3-$4");     
+	        return valor;
+	    }
+ 
+	    function mascaraCNPJ(valor) {
+	        // Remove qualquer caracter digitado que não seja numero
+	        valor = valor.replace(/\D/g, "");                           
+	 
+	        // Adiciona um ponto entre o segundo e o terceiro dígitos
+	        valor = valor.replace(/(\d{2})(\d)/, "$1.$2");
+	        // Adiciona um ponto entre o quinto e o sexto dígitos
+	        valor = valor.replace(/(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+	        valor = valor.replace(/(\d{2})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3/$4");
+	        valor = valor.replace(/(\d{2})\.(\d{3})\.(\d{3})\/(\d{4})(\d{1,2})/, "$1.$2.$3/$4-$5");
+	        // Adiciona uma barra entre o oitavaloro e o nono dígitos
+	        return valor;
+	    }
+
 		
 		function validateByRegex(value, element, regex) {
 			if(regex.exec(value)) {
@@ -250,19 +372,19 @@
 			$(this).find('input').each(function (i) {
 
 				var attr = $(this).attr('is');
-
+				var opcional = $(this).attr('optional');
 				if (typeof attr !== typeof undefined && attr !== false) {
    					var border = $(this).css('border-color');
-   					
    					if (border != BORDER_COLOR_SUCCESS) {
    						if (!genericValidationElement($(this))) {
-   							validationFail = true;
+   							if (opcional !== 'true') {
+   								validationFail = true;
+   							}
    						}
-   					} 
+   					}	
 				}	
-
 			});
-
+			
 			if (validationFail) {
 				event.preventDefault();
 				return false;
