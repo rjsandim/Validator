@@ -4,20 +4,19 @@
 	<meta charset="UTF-8">
 	<title>Jquery Form Validator Plugin</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="vendor/datepicker/css/datepicker.css">
+	<link rel="stylesheet" href="vendor/form-validator-vendor.min.css">
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src="vendor/datepicker/js/bootstrap-datepicker.js"></script>
-	<script src="vendor/masked-input/jquery.maskedinput.min.js"></script>
-	<script src="vendor/money/jquery.maskMoney.js"></script>
+	<script src="vendor/form-validator-vendor.min.js"></script>
 	<script src="form-validator.js"></script>
 </head>
 <body>
 	
 	<h1>Jquery Form Validator Plugin</h1>
 	<h2>Form 1</h2>
-	<form action="">
+	<form action="" method="POST">
 		<label for="">Email</label>
-		<input type="text" name="email" is="email" placeholder="Email"><br>
+		<input type="text" name="email" is="email" placeholder="Email" msg="O email está no formato errado ou o campo está em branco."><br>
 		<label for="">Second Email</label>
 		<input type="text" name="email" is="secondEmail" placeholder="Second Email"><br>
 		<label for="">CPF</label>
@@ -52,14 +51,22 @@
 		<input type="password" name="secondPass" is="secondPass" placeholder="Segunda Senha"><br>
 		<label for="">Sem Is</label>
 		<input type="text" name="semIs" placeholder="Sem is"><br>
+		<label for="">TIme</label>
+		<input type="text" name="time" placeholder="Time" is="time"><br>
+		<label for="">CNPJ</label>
+		<input type="text" name="cnpj" placeholder="CNPJ" is="cnpj"><br>
+		<label for="">CPF E CNPJ</label>
+		<input type="text" name="cpf_cpnj" placeholder="CPF E CNPJ" is="cpf_cnpj"><br>
+		<label for="">TEXT AREA</label>
+		<textarea is="required" msg="Deve escrever sobre ..."></textarea><br>
 		<input type="submit" value="Enviar 1">
 	</form>
 	<h2>Form 2</h2>
 	<form action="" id="form2">
 		<label for="">Email</label>
-		<input type="text" name="email" is="email" placeholder="Email"><br>
+		<input type="text" name="email" is="v1" placeholder="Email"><br>
 		<label for="">CPF</label>
-		<input type="text" name="cpf" is="cpf" placeholder="CPF"><br>
+		<input type="text" name="cpf" is="v2" placeholder="CPF"><br>
 		<label for="">CNPJ</label>
 		<input type="text" name="cnpj" is="cnpj" placeholder="CNPJ"><br>
 		<label for="">CPF/CNPJ</label>
@@ -91,7 +98,23 @@
 
 	<script type="text/javascript">
 	$(document).ready(function() { 
-		$('form').formValidator();
+		$('form').formValidator({
+			beforeValidate: function() {
+				console.log("Before Validate");
+			},
+			afterValidate: function() {
+				
+			},
+			customValidator: {
+				v1: function() {
+					console.log("Novo Validador");
+					return true;
+				},
+				v2: function() {
+					console.log("Novo validador 2");
+				}
+			}
+		});
 	});
 
 	</script>

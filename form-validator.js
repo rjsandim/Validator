@@ -1,37 +1,53 @@
 (function( $ ){
-	$.fn.formValidator = function() {
+	$.fn.formValidator = function(options) {
+
+		var defaults = {
+			customValidator: null,
+			customMask: null,
+			cep: {
+				stateClassName: '.estado',
+				cityClassName: '.cidade',
+				neighborhoodClassName: '.bairro',
+				streetClassName: '.endereco'
+			},
+			regex: {
+				email: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+				date: /^(0([1-9])|(1|2)([0-9])|3([0-1]))\/(0([1-9])|1([0-2]))\/(19|2[0-9])[0-9]{2}/,
+				phone:  /^\([0-9]{2}\)\s([0-9]\s)?[0-9]{4}\-[0-9]{4}/,
+				money: /^(\R\$\s)?([0-9]{1,3}\.)*[0-9]{1,3}\,[0-9]{2}/,
+				time: /^(([0-1]\d)|([2][0-3]))\:[0-5]\d/,
+			},
+			borderColor: {
+				error: "rgb(224, 23, 23)",
+				success: "rgb(39, 173, 30)", 
+			},
+			validadeThisSelectors: 'input, textarea',
+			beforeValidate: function() {},
+			afterValidate: function() {},
+			beforeValidateEach: function() {},
+			afterValidateEach: function() {}
+		}
+
+		var settings = $.extend( {}, defaults, options );
  		
+ 		var errors;
  		var passwordValue;
  		var emailValue;
-		var is;
-		var BORDER_COLOR_SUCCESS = "rgb(39, 173, 30)";
-		var BORDER_COLOR_ERROR = "rgb(224, 23, 23)";
-		var validator = { 
+
+
+		var validatorType = { 
 			email: function validateEmail(value, element) {
-				var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 				emailValue = value;
-				return validateByRegex(value, element, regex);
+				return validateByRegex(value, element, settings.regex.email);
 			},
 			secondEmail: function confirmEmail(value, element) {
-				if (emailValue === value && value.length) {
-					return success(element);
-				} else {
-					return error(element);
-				}
+				return emailValue === value && value.length;
 			},
 			cpf: function validateCPF(value, element) {
-				if (validatorCPF(value)) {
-					return success(element);
-				} else {
-					return error(element);
-				}
+				return validatorCPF(value);
 			},
 			cnpj: function validateCNPJ(value, element) {
-				if (validatorCNPJ(value)) {
-					return success(element);
-				} else {
-					return error(element);
-				}
+				return validatorCNPJ(value);
 			},
 			cpf_cnpj: function validadeCpfCnpj(value, element) {
 				validation = false;
@@ -46,26 +62,16 @@
 	            	validation = validatorCNPJ(value);
 	            }
 
-	            if (validation) {
-	            	return success(element);
-	            } else {
-	            	return error(element);
-	            }
+	            return validation;
  			}, 
 			required : function isRequired(value, element) {
-				if (value.length) { 
-					return success(element);
-				} else {
-					return error(element);
-				}
+				return value.length;
 			}, 
 			date: function validateDate(value, element) {
-				var regex = /^(0([1-9])|(1|2)([0-9])|3([0-1]))\/(0([1-9])|1([0-2]))\/(19|2[0-9])[0-9]{2}/;
-				return validateByRegex(value, element, regex);
+				return validateByRegex(value, element, settings.regex.date);
 			},
 			phone: function validatePhone(value, element) {
-				var regex = /^\([0-9]{2}\)\s([0-9]\s)?[0-9]{4}\-[0-9]{4}/;
-				return validateByRegex(value, element, regex);
+				return validateByRegex(value, element, settings.regex.phone);
 			},
 			cep: function validateCEP(value, element) {
 
@@ -77,52 +83,47 @@
 
 					var form = element.closest('form');
 					if (json.success) {
-						var estado = form.find('.estado');
-						var cidade = form.find('.cidade');
-						var bairro = form.find('.bairro');
-						var endereco = form.find('.endereco');
+						var state = form.find(settings.cep.stateClassName);
+						var city = form.find(settings.cep.cityClassName);
+						var neighborhood = form.find(settings.cep.neighborhoodClassName);
+						var street = form.find(settings.cep.streetClassName);
 
-						estado.val(json.estado);
-						cidade.val(json.cidade);
-						bairro.val(json.bairro);
-						endereco.val(json.logradouro_tipo + " " + json.logradouro);
+						state.val(json.estado);
+						city.val(json.cidade);
+						neighborhood.val(json.bairro);
+						street.val(json.logradouro_tipo + " " + json.logradouro);
 
-						success(estado);
-						success(cidade);
-						success(bairro);
-						success(endereco);
-						return success(element);
+						success(state);
+						success(city);
+						success(neighborhood);
+						success(street);
+						success(element);
 
 					} else {
-						return error(element);
+						return false;
 					}
 
 				}).fail(function() {
-					return error(element);
+					return false;
 				});
 			},
 			money: function validateMoney(value, element) {
-				var regex = /^(\R\$\s)?([0-9]{1,3}\.)*[0-9]{1,3}\,[0-9]{2}/;
-				return validateByRegex(value, element, regex);
+				return validateByRegex(value, element, settings.regex.money);
 			},
 			firstPass: function validatePass(value, element) {
 				passwordValue = value;
 
-				if (value.length) { 
-					return success(element);
-				} else {
-					return error(element);
-				}
+				return value.length;
 			},
 			secondPass: function confirmPass(value, element) {
-				if (passwordValue === value && value.length) {
-					return success(element);
-				} else {
-					return error(element);
-				}
+				return passwordValue === value && value.length;
 			},
-
+			time: function validateTime(value, element) {
+				return validateByRegex(value, element, settings.regex.time);
+			}
 		};
+
+		var validator = $.extend( {}, validatorType, settings.customValidator);
 
 		var masks = {
 			cpf: function cpfMask(e) {
@@ -165,8 +166,11 @@
 					showSymbol: true, 
 					thousands:'.', 
 					decimal:',', 
-					symbolStay: false
+					symbolStay: true
 				});
+			},
+			time: function timeMask(e) {
+				e.mask("99:99");
 			}
 		};
 
@@ -174,7 +178,7 @@
 			
 			$('form').each(function() {
 			
-				$(this).find('input').each(function (i) {
+				$(this).find(settings.validadeThisSelectors).each(function (i) {
 					var attr = $(this).attr('is');
 					
 					if (typeof attr !== typeof undefined && attr !== false) {
@@ -322,20 +326,27 @@
 
 		
 		function validateByRegex(value, element, regex) {
-			if(regex.exec(value)) {
-				return success(element);
-			} else {
-				return error(element);
-			}
+			return regex.exec(value);
 		}
 
 		function success(element) {
-			element.css("border-color", BORDER_COLOR_SUCCESS);
+			element.css("border-color", settings.borderColor.success);
 			return true;
 		}
 
 		function error(element) {
-			element.css("border-color", BORDER_COLOR_ERROR); 
+
+			var msg = element.attr('msg');
+
+			if (typeof msg !== typeof undefined && msg !== false) {
+				errors.push(msg);
+			}
+
+			var optional = element.attr('optional');
+			if (optional !== 'true') { 
+				element.css("border-color", settings.borderColor.error);
+			}
+			console.log(optional); 
 			return false;
 		}
 
@@ -344,54 +355,88 @@
 			is = $(this).attr('is');
 			var fn = validator[is];
 			var v = $(this).val();
+			var result;
 
 			if (typeof fn === "function") { 
-				return fn(v, $(this));
-			}	
-			return false;	
+				result =  fn(v, $(this));
+
+				if (result) {
+					return success($(this));
+				} else {
+					return error($(this));
+				}
+			}
 		}
 
 		function genericValidationElement(element) {
 			
-			is = element.attr('is');
+			var is = element.attr('is');
 			var fn = validator[is];
 			var v = element.val();
+			var result;
 
 			if (typeof fn === "function") { 
-				return fn(v, element);
+				result =  fn(v, element);
+
+				if (result) {
+					return success(element);
+				} else {
+					return error(element);
+				}
 			}
-			return false;	
 		}
 
-		$('input').blur(genericValidation);
+		$(settings.validadeThisSelectors).blur(genericValidation);
 
-		$('input').on('keyup',  genericValidation);
+		$(settings.validadeThisSelectors).on('keyup',  genericValidation);
 
 		$(this).submit( function( event ) {
+			settings.beforeValidate.call();
 			var validationFail = false;
-			$(this).find('input').each(function (i) {
+			
+			errors = [];
+
+			$(this).find(settings.validadeThisSelectors).each(function (i) {
 
 				var attr = $(this).attr('is');
-				var opcional = $(this).attr('optional');
+
 				if (typeof attr !== typeof undefined && attr !== false) {
    					var border = $(this).css('border-color');
-   					if (border != BORDER_COLOR_SUCCESS) {
+   					
+   					if (border != settings.borderColor.success) {
    						if (!genericValidationElement($(this))) {
-   							if (opcional !== 'true') {
-   								validationFail = true;
-   							}
+   							validationFail = true;
    						}
-   					}	
+   					} 
 				}	
+
 			});
-			
-			if (validationFail) {
+
+			settings.afterValidate.call();
+
+			if (this) {
 				event.preventDefault();
+				showErrorMessages();
+
 				return false;
 			} else {
 				return true;
 			}			
 		});
+
+
+		var showErrorMessages = function() {
+			if (errors.length > 0) {
+
+				var errorHtml = ""; 
+				errors.forEach(function(error) {
+					errorHtml += "<p>"+error+"</p>";
+				});
+
+				swal({title: "Oops...", text: errorHtml, html: true, type: "error"});
+
+			}
+		};
 
 	};
 
