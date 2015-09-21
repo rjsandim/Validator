@@ -19,30 +19,193 @@
     </section>
 
     <section class="main-content">
-      <h3>
-<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+      <h1>
+<a id="jquery-form-validator-plugin" class="anchor" href="#jquery-form-validator-plugin" aria-hidden="true"><span class="octicon octicon-link"></span></a>Jquery-Form-Validator-Plugin</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here <a href="https://guides.github.com/features/mastering-markdown/">using GitHub Flavored Markdown</a>, select a template crafted by a designer, and publish. After your page is generated, you can check out the new <code>gh-pages</code> branch locally. If you’re using GitHub Desktop, simply sync your repository and you’ll see the new branch.</p>
+<p>Plugin genérico de validação de formulário utilizando Jquery e validando através de expressões regulares.</p>
+
+<p>Esse plugin suporta:</p>
+
+<ul>
+<li>Validação dos seguintes tipos de campos:
+
+<ul>
+<li>Email 
+
+<ul>
+<li>exemplo: <a href="mailto:rjsandim@gmail.com">rjsandim@gmail.com</a>
+</li>
+<li>is="email"</li>
+</ul>
+</li>
+<li>CPF 
+
+<ul>
+<li>exemplo: 012.345.678-40</li>
+<li>is="cpf"</li>
+</ul>
+</li>
+<li>Requerido
+
+<ul>
+<li>is="required" </li>
+</ul>
+</li>
+<li>Data
+
+<ul>
+<li>exemplo: dd/mm/aaaa</li>
+<li>is="date"</li>
+</ul>
+</li>
+<li>Telefone
+
+<ul>
+<li>exemplo: (33) 3333-3333 ou (33) 3333-33333</li>
+<li>is="phone"</li>
+<li>suporta nono digito</li>
+</ul>
+</li>
+<li>Moeda
+
+<ul>
+<li>exemplo: 333.333,00</li>
+<li>is="money"</li>
+<li>padrão R$</li>
+</ul>
+</li>
+<li>CEP
+
+<ul>
+<li>exemplo: 79092-251</li>
+<li> is="cep"</li>
+<li> retorna: estado, cidade, bairro e endereco.</li>
+<li> cada retorno deve ser indicado como classe de um input para que o valor seja setado.</li>
+</ul>
+</li>
+<li>Senha/Confirmação de Senha
+
+<ul>
+<li>is="firstPass", e deve ser confirmado com o is="secondPass". </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Máscara para os seguintes tipos de campos:
+
+<ul>
+<li>CPF</li>
+<li>Data</li>
+<li>Telefone</li>
+<li>CEP</li>
+<li>Moeda</li>
+</ul>
+</li>
+<li>Plugin para facilitar o input:
+
+<ul>
+<li>datepicker (bootstrap)</li>
+</ul>
+</li>
+<li>Múltiplos forms por página</li>
+</ul>
+
+<h1>
+<a id="como-instalar" class="anchor" href="#como-instalar" aria-hidden="true"><span class="octicon octicon-link"></span></a>Como instalar</h1>
+
+<p>Para instalar o plugin devemos incluir todas as dependências e o <em>form-validator.js</em>, como podemos ver no arquivo <em>index.html</em>.</p>
+
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-c">&lt;!-- A inclusão do bootstrap é opcional --&gt;</span>
+&lt;<span class="pl-ent">link</span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css<span class="pl-pds">"</span></span>&gt;
+&lt;<span class="pl-ent">link</span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>vendor/datepicker/css/datepicker.css<span class="pl-pds">"</span></span>&gt;
+<span class="pl-c">&lt;!-- Não incluir duas versões de jquery  --&gt;</span>
+&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>vendor/datepicker/js/bootstrap-datepicker.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>vendor/masked-input/jquery.maskedinput.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>form-validator.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<p>Pronto, o plugin está funcionando.</p>
+
+<h1>
+<a id="como-usar" class="anchor" href="#como-usar" aria-hidden="true"><span class="octicon octicon-link"></span></a>Como usar</h1>
+
+<p>Para ativar o plugin você deve escrever o seguinte código.</p>
+
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-s1">&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span>&gt;</span>
+<span class="pl-s1">    $(<span class="pl-c1">document</span>).ready(<span class="pl-k">function</span>() { </span>
+<span class="pl-s1">        $(<span class="pl-s"><span class="pl-pds">'</span>form<span class="pl-pds">'</span></span>).formValidator();</span>
+<span class="pl-s1">    });</span>
+<span class="pl-s1">&lt;/<span class="pl-ent">script</span>&gt;</span></pre></div>
+
+<p>Agora para todos os formulários do seu arquivo.html o plugin formValidator estará funcionando, porém devemos indicar para cada tipo de campo qual validação devemos aplicar. Para isso, devemos acrescentar o atributo <em>is="nome_da_validação"</em>.</p>
+
+<h4>
+<a id="validação-de-email" class="anchor" href="#valida%C3%A7%C3%A3o-de-email" aria-hidden="true"><span class="octicon octicon-link"></span></a>Validação de Email</h4>
+
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-c">&lt;!-- Note o is="email" --&gt;</span>
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>email<span class="pl-pds">"</span></span> <span class="pl-e">is</span>=<span class="pl-s"><span class="pl-pds">"</span>email<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>Email<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;</pre></div>
+
+<h4>
+<a id="validação-de-cpf" class="anchor" href="#valida%C3%A7%C3%A3o-de-cpf" aria-hidden="true"><span class="octicon octicon-link"></span></a>Validação de CPF</h4>
+
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-c">&lt;!-- Note o is="cpf" --&gt;</span>
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>cpf<span class="pl-pds">"</span></span> <span class="pl-e">is</span>=<span class="pl-s"><span class="pl-pds">"</span>cpf<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>CPF<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;</pre></div>
+
+<h4>
+<a id="validação-de-requerido" class="anchor" href="#valida%C3%A7%C3%A3o-de-requerido" aria-hidden="true"><span class="octicon octicon-link"></span></a>Validação de Requerido</h4>
+
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-c">&lt;!-- Note o is="required" --&gt;</span>
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>required<span class="pl-pds">"</span></span> <span class="pl-e">is</span>=<span class="pl-s"><span class="pl-pds">"</span>required<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>Requerido<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;</pre></div>
+
+<h4>
+<a id="validação-de-data" class="anchor" href="#valida%C3%A7%C3%A3o-de-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Validação de Data</h4>
+
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-c">&lt;!-- Note o is="date" --&gt;</span>
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>date<span class="pl-pds">"</span></span> <span class="pl-e">is</span>=<span class="pl-s"><span class="pl-pds">"</span>date<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>Data<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;</pre></div>
+
+<h4>
+<a id="validação-de-telefone" class="anchor" href="#valida%C3%A7%C3%A3o-de-telefone" aria-hidden="true"><span class="octicon octicon-link"></span></a>Validação de Telefone</h4>
+
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-c">&lt;!-- Note o is="phone" --&gt;</span>
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>phone<span class="pl-pds">"</span></span> <span class="pl-e">is</span>=<span class="pl-s"><span class="pl-pds">"</span>phone<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>Telefone<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;</pre></div>
+
+<h4>
+<a id="validação-de-moeda" class="anchor" href="#valida%C3%A7%C3%A3o-de-moeda" aria-hidden="true"><span class="octicon octicon-link"></span></a>Validação de Moeda</h4>
+
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-c">&lt;!-- Note o is="money" --&gt;</span>
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>moeda<span class="pl-pds">"</span></span> <span class="pl-e">is</span>=<span class="pl-s"><span class="pl-pds">"</span>money<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>Moeda<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;</pre></div>
+
+<h4>
+<a id="validação-de-cep" class="anchor" href="#valida%C3%A7%C3%A3o-de-cep" aria-hidden="true"><span class="octicon octicon-link"></span></a>Validação de CEP</h4>
+
+<div class="highlight highlight-text-html-basic"><pre><span class="pl-c">&lt;!-- Note o is="cep" --&gt;</span>
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>cep<span class="pl-pds">"</span></span> <span class="pl-e">is</span>=<span class="pl-s"><span class="pl-pds">"</span>cep<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>CEP<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;
+<span class="pl-c">&lt;!-- O cep procurará as classes de inputs dentro do form: estado, cidade, bairro e endereco para colocar o valor correto do resultado da busca pelo cep --&gt;</span>
+&lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>&gt;Estado&lt;/<span class="pl-ent">label</span>&gt;
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>estado<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>estado<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>Estado<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;
+&lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>&gt;Cidade&lt;/<span class="pl-ent">label</span>&gt;
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>cidade<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>cidade<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>Cidade<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;
+&lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>&gt;Bairro&lt;/<span class="pl-ent">label</span>&gt;
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>bairro<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>bairro<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>Bairro<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;
+&lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>&gt;Endereço&lt;/<span class="pl-ent">label</span>&gt;
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>endereco<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>endereco<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>Endereço<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;</pre></div>
+
+<h4>
+<a id="validação-de-senhaconfirmação" class="anchor" href="#valida%C3%A7%C3%A3o-de-senhaconfirma%C3%A7%C3%A3o" aria-hidden="true"><span class="octicon octicon-link"></span></a>Validação de Senha/Confirmação</h4>
+
+<p>Verifica se <em>firstPass</em> e <em>secondPass</em> são iguais.</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>&gt;Primeira Senha&lt;/<span class="pl-ent">label</span>&gt;
+<span class="pl-c">&lt;!-- Note o is="firstPass" --&gt;</span>
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>fistPass<span class="pl-pds">"</span></span> <span class="pl-e">is</span>=<span class="pl-s"><span class="pl-pds">"</span>firstPass<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>Primeira Senha<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;
+&lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>&gt;Segunda Senha&lt;/<span class="pl-ent">label</span>&gt;
+<span class="pl-c">&lt;!-- Note o is="secondPass" --&gt;</span>
+&lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>secondPass<span class="pl-pds">"</span></span> <span class="pl-e">is</span>=<span class="pl-s"><span class="pl-pds">"</span>secondPass<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>Segunda Senha<span class="pl-pds">"</span></span>&gt;&lt;<span class="pl-ent">br</span>&gt;</pre></div>
 
 <h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a id="version" class="anchor" href="#version" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version</h3>
 
-<p>We’ve crafted some handsome templates for you to use. Go ahead and click 'Continue to layouts' to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved.</p>
-
-<h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating pages manually</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
+<p>1.0.1</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/rjsandim/Validator">Validator</a> is maintained by <a href="https://github.com/rjsandim">rjsandim</a>.</span>
