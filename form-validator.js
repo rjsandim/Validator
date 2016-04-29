@@ -414,7 +414,7 @@
 
 			settings.afterValidate.call();
 
-			if (this) {
+			if (validationFail) {
 				event.preventDefault();
 				showErrorMessages();
 
